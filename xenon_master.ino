@@ -1,37 +1,36 @@
 
-char deviceID[] = "badge23243";
+char deviceID[] = "badge22341";
 char normalTopic[] = "BadgeConnTopic";
-char emegencyTopic[] = "emergencyTopic";
+char emerTopic[] = "emergencyTopic";
 int emgButton = D2;
 volatile int topic = 0;
 
 
 void setup() {
     pinMode(emgButton,INPUT_PULLUP);
-    attachInterrupt(emgButton, EmgHandler, CHANGE);
+    attachInterrupt(emgButton, EmgHandler,CHANGE,12);
 }
 
 
 
 
 void loop() {
-    
     if(Mesh.ready())
     {
         if(topic >= 6)
         {
-            Mesh.publish(emegencyTopic,deviceID);
+            Mesh.publish(emerTopic,deviceID);
             topic = 0;
         }
-        else if(topic == 0)
+        else
         {
             Mesh.publish(normalTopic,deviceID);
-            delay(2500);
+            delay(1200);
         }
     }
     
 }
-void EmgHandler(const char *event, const char *data)
+void EmgHandler()
 {
     topic++;
 }

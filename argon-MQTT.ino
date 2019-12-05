@@ -96,9 +96,8 @@ void BadgeHandler(const char *event, const char *data)
         Serial.printlnf(".. send to broker");
         emergency = true;
     }
-    else{
-        Serial.printlnf("event : %s  badge ID : %s",event,data);
-    }
+    Serial.printlnf("event : %s  badge ID : %s",event,data);
+    
 }
 
 
@@ -132,15 +131,21 @@ void loop() {
     if (!client.isConnected())
         reconnect();
     client.loop();
-    delay(1000);
-    snprintf (status, 75, "%d/%d/%s",carNumber,seatNum,deviceID); //if seatNumber == 0 => not sitting
+    
     
     
     if(!emergency){
+        delay(2000);
+        snprintf (status, 75, "%d/%d/%s",carNumber,seatNum,badgeID); //if seatNumber == 0 => not sitting
         Serial.print("Publish message: ");
         Serial.println(status);
         client.publish("pregNom", status);
     }
+    else
+    {
+        client.publish("pregNom", status);
+    }
+    
   
 }
 
